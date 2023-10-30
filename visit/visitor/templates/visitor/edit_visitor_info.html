@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container" style="margin-top: 50px; ">
+        <form method="post" action="{% url 'edit_visitor' visitor_id %}" class="visit_form">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6" style="margin-top: 40px">
+                    <div class="form-group" style="display: flex;justify-content: space-between;width: 350px">
+                        <div style="flex: 1;">
+                            <label for="{{ form.first_name.id_for_label }}">First Name</label>
+                        </div>
+                        <div style="flex: 1; text-align: right">
+                            {{ form.first_name }}
+                        </div>
+                    </div>
+                    <div class="form-group" style="display: flex;justify-content: space-between;width: 350px">
+                        <div style="flex: 1;">
+                            <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+                        </div>
+                        <div style="flex: 1; text-align: right">
+                            {{ form.last_name }}
+                        </div>
+                    </div>
+                    <div class="form-group" style="display: flex;justify-content: space-between;width: 350px">
+                        <div style="flex: 1;">
+                            <label for="{{ form.position.id_for_label }}">Position</label>
+                        </div>
+                        <div style="flex: 1; text-align: right">
+                            {{ form.position }}
+                        </div>
+                    </div>
+                    <div class="form-group" style="display: flex;justify-content: space-between;width: 350px">
+                        <div style="flex: 1;">
+                            <label for="{{ form.priority.id_for_label }}">Priority</label>
+                        </div>
+                        <div style="flex: 1; text-align: right;">
+                            {{ form.priority }}
+                        </div>
+                    </div>
+                    <div class="form-group" style="display: flex;justify-content: space-between;width: 350px">
+                        <div style="flex: 1;">
+                            <label for="{{ form.company_name.id_for_label }}">Company Name</label>
+                        </div>
+                        <div style="flex: 1; text-align: right">
+                            {{ form.company_name }}
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div style="flex: 1;">
+                            <label for="{{ form.purpose_of_visit.id_for_label }}">Purpose of visit</label>
+                        </div>
+                        <div>
+                            {{ form.purpose_of_visit }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <div class="row justify-content-center" style="margin-top: 100px">
+        <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-primary">save</button>
+            <form method="post" action="{% url 'edit_visitor_transportation' visitor_id %}">
+                {% csrf_token %}
+                <input type="hidden" name="visitor_id" value="{{ visitor_id }}">
+                <a href="{% url 'edit_visitor_transportation' visitor_id %}" class="btn btn-primary">Transportation</a>
+                <a type="submit" href="{% url 'edit_wab_needs' visitor_id %}" class="btn btn-primary">Wab needs</a>
+                <a type="submit" href="{% url 'edit_last_form' visitor_id %}" class="btn btn-primary">Out of office plans</a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    </form>
+
+    {#        <form method="post" action="{% url 'edit_visitor' visitor_id %}">#}
+    {#            {% csrf_token %}#}
+    {#            {{ forms.transport.as_p }}#}
+    {#            <button>ok</button>#}
+    {#        </form>#}
+    {#     <div class="container" style="margin-top: 30px">#}
+    {#    <form method="post" action="{% url 'edit_visitor' visitor_id %}">#}
+    {#  {% csrf_token %}#}
+    {##}
+    {#  <div class="row">#}
+    {#    <div class="col-md-6">#}
+    {##}
+    {#     <div class="form-group">#}
+    {#        <label for="{{ forms.transport.arrival_airport.id_for_label }}">Arrival Airport:</label>#}
+    {#        <input type="datetime-local" class="form-control" id="{{ forms.transport.arrival_airport.id_for_label }}"#}
+    {#               name="{{ forms.transport.arrival_airport.name}}" placeholder="YYYY-MM-DDTHH:MM">#}
+    {#         <div>#}
+    {#             {{ forms.transport.arrival_airport }}#}
+    {#         </div>#}
+    {#     </div>#}
+    {##}
+    {#      <div class="form-group">#}
+    {#        <label for="{{ forms.transport.airport_to_wab.id_for_label }}">Airport to Wab:</label>#}
+    {#        <input type="datetime-local" class="form-control" id="{{ forms.transport.airport_to_wab.id_for_label }}"#}
+    {#         name="{{ forms.transport.airport_to_wab.name }}" placeholder="YYYY-MM-DDTHH:MM">#}
+    {#      </div>#}
+    {##}
+    {#        <div class="form-group">#}
+    {#            <label for="{{ forms.transport.airport_to_hotel.id_for_label }}">Airport to Hotel:</label>#}
+    {#            <input type="datetime-local" class="form-control" id="{{ forms.transport.airport_to_hotel.id_for_label }}"#}
+    {#            name="{{ forms.transport.airport_to_hotel.name }}" placeholder="YYYY-MM-DDTHH:MM">#}
+    {#        </div>#}
+    {##}
+    {#      <div class="form-group">#}
+    {#        <label for="{{ forms.transport.hotel_to_wab.id_for_label }}">Hotel to Wab:</label>#}
+    {#        <input type="datetime-local" class="form-control" id="{{ forms.transport.hotel_to_wab.id_for_label }}"#}
+    {#         name="{{ forms.transport.hotel_to_wab.name }}" placeholder="YYYY-MM-DDTHH:MM">#}
+    {#      </div>#}
+    {##}
+    {#    </div>#}
+    {##}
+    {#    <div class="col-md-6">#}
+    {#        <div class="form-group">#}
+    {#            <label for="{{ forms.transport.wab_to_hotel.id_for_label }}">Wab to hotel:</label>#}
+    {#            <input type="datetime-local" class="form-control" id="{{ forms.transport.wab_to_hotel.id_for_label }}"#}
+    {#            name="{{ forms.transport.wab_to_hotel.name }}" placeholder="YYYY-MM-DDTHH:MM">#}
+    {#    </div>#}
+    {#  <div class="form-group">#}
+    {#    <label for="{{ forms.transport.wab_to_airport.id_for_label }}">Wab to airport:</label>#}
+    {#    <input type="datetime-local" class="form-control" id="{{ forms.transport.wab_to_airport.id_for_label }}"#}
+    {#           name="{{ forms.transport.wab_to_airport.name }}" placeholder="YYYY-MM-DDTHH:MM">#}
+    {#</div>#}
+    {##}
+    {# <div class="form-group">#}
+    {#    <label for="{{ forms.transport.hotel_to_airport.id_for_label }}">Hotel to airport:</label>#}
+    {#    <input type="datetime-local" class="form-control" id="{{ forms.transport.hotel_to_airport.id_for_label }}"#}
+    {#           name="{{ forms.transport.hotel_to_airport.name }}" placeholder="YYYY-MM-DDTHH:MM">#}
+    {#</div>#}
+    {##}
+    {#      <div class="form-group">#}
+    {#    <label for="{{ forms.transport.own_transport.id_for_label }}">Own Transport:</label>#}
+    {#    {{ forms.transport.own_transport }}#}
+    {#  </div>#}
+    {#  <div class="form-group">#}
+    {#    <label for="{{ forms.transport.parking.id_for_label }}">Parking:</label>#}
+    {#          {{ forms.transport.parking }}#}
+    {##}
+    {##}
+    {#  </div>#}
+    {#  <div class="form-group" style="display: none" id="parking_choice">#}
+    {#    <label for="{{ forms.transport.parking_choice.id_for_label}}">Choice parking:</label>#}
+    {#    {{ forms.transport.parking_choice }}#}
+    {#  </div>#}
+    {#    </div>#}
+    {#      <p style="color: red">{% if forms.transport.errors %}{% for error in forms.transport.errors %}#}
+    {#      	{{ error }}#}
+    {#      {% endfor %}#}
+    {#      {% endif %}</p>#}
+    {#  </div>#}
+    {##}
+    {#    <div class="row justify-content-center" style="margin-top: 100px">#}
+    {#                <div class="col-md-12 text-center">#}
+    {#                    <button type="submit" class="btn btn-primary">Save</button>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#</form>#}
+    {#</div>#}
+    </div>
+{% endblock %}
+
+{#{% extends "base.html" %}#}
+{#{% block content %}#}
+{#    <form method="post" action="{% url 'edit_visitor' visitor_id %}">{% csrf_token %}{{ forms.visitor.as_p }}{{ forms.transport.as_p }}<button>OK</button></form>#}
+{#{% endblock %}#}
+
+{##}
+{#  <div class="row" style="margin-top: 20px">#}
+{#        <div class="col-md-6">#}
+{##}
+{#         <div class="form-group">#}
+{#            <label for="{{ forms.transport.arrival_airport.id_for_label }}">Arrival Airport:</label>#}
+{#            <input type="datetime-local" class="form-control" id="{{ forms.transport.arrival_airport.id_for_label }}"#}
+{#                   name="{{ forms.transport.arrival_airport.name}}" placeholder="YYYY-MM-DDTHH:MM">#}
+{#         </div>#}
+{##}
+{#          <div class="form-group">#}
+{#            <label for="{{ forms.transport.airport_to_wab.id_for_label }}">Airport to Wab:</label>#}
+{#            <input type="datetime-local" class="form-control" id="{{ forms.transport.airport_to_wab.id_for_label }}"#}
+{#             name="{{ forms.transport.airport_to_wab.name }}" placeholder="YYYY-MM-DDTHH:MM">#}
+{#          </div>#}
+{##}
+{#            <div class="form-group">#}
+{#                <label for="{{ forms.transport.airport_to_hotel.id_for_label }}">Airport to Hotel:</label>#}
+{#                <input type="datetime-local" class="form-control" id="{{ forms.transport.airport_to_hotel.id_for_label }}"#}
+{#                name="{{ forms.transport.airport_to_hotel.name }}" placeholder="YYYY-MM-DDTHH:MM">#}
+{#            </div>#}
+{##}
+{#          <div class="form-group">#}
+{#            <label for="{{ forms.transport.hotel_to_wab.id_for_label }}">Hotel to Wab:</label>#}
+{#            <input type="datetime-local" class="form-control" id="{{ forms.transport.hotel_to_wab.id_for_label }}"#}
+{#             name="{{ forms.transport.hotel_to_wab.name }}" placeholder="YYYY-MM-DDTHH:MM">#}
+{#          </div>#}
+{##}
+{#        </div>#}
+{##}
+{#        <div class="col-md-6">#}
+{#            <div class="form-group">#}
+{#                <label for="{{ forms.transport.wab_to_hotel.id_for_label }}">Wab to hotel:</label>#}
+{#                <input type="datetime-local" class="form-control" id="{{ forms.transport.wab_to_hotel.id_for_label }}"#}
+{#                name="{{ forms.transport.wab_to_hotel.name }}" placeholder="YYYY-MM-DDTHH:MM">#}
+{#        </div>#}
+{#      <div class="form-group">#}
+{#        <label for="{{ forms.transport.wab_to_airport.id_for_label }}">Wab to airport:</label>#}
+{#        <input type="datetime-local" class="form-control" id="{{ forms.transport.wab_to_airport.id_for_label }}"#}
+{#               name="{{ forms.transport.wab_to_airport.name }}" placeholder="YYYY-MM-DDTHH:MM">#}
+{#    </div>#}
+{##}
+{#     <div class="form-group">#}
+{#        <label for="{{ forms.transport.hotel_to_airport.id_for_label }}">Hotel to airport:</label>#}
+{#        <input type="datetime-local" class="form-control" id="{{ forms.transport.hotel_to_airport.id_for_label }}"#}
+{#               name="{{ forms.transport.hotel_to_airport.name }}" placeholder="YYYY-MM-DDTHH:MM">#}
+{#    </div>#}
+{##}
+{#          <div class="form-group">#}
+{#        <label for="{{ forms.transport.own_transport.id_for_label }}">Own Transport:</label>#}
+{#        {{ forms.transport.own_transport }}#}
+{#      </div>#}
+{#      <div class="form-group">#}
+{#        <label for="{{ forms.transport.parking.id_for_label }}">Parking:</label>#}
+{#              {{ forms.transport.parking }}#}
+{##}
+{##}
+{#      </div>#}
+{#      <div class="form-group" style="display: none" id="parking_choice">#}
+{#        <label for="{{ forms.transport.parking_choice.id_for_label}}">Choice parking:</label>#}
+{#        {{ forms.transport.parking_choice }}#}
+{#      </div>#}
+{#        </div>#}

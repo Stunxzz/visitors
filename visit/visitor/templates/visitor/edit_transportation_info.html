@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <body>
+{#<form method="post" action="{% url 'edit_visitor_transportation' visitor_id %}">#}
+{#    {%csrf_token %}#}
+{#    {{ form.as_p }}#}
+{#    <button type="submit">ok</button>#}
+{##}
+<form method="post" action="{% url 'edit_visitor_transportation' visitor_id %}">
+    {%csrf_token %}
+    <div class="container" style="margin-top: 30px">
+      <div class="row" style="margin-top: 20px">
+        <div class="col-md-6">
+
+         <div class="form-group">
+            <label for="{{ form.arrival_airport.id_for_label }}">Arrival Airport:</label>
+            <input type="datetime-local" class="form-control" id="{{ form.arrival_airport.id_for_label }}"
+            name="{{ form.arrival_airport.name}}" placeholder="YYYY-MM-DDTHH:MM"
+                    {% if form.arrival_airport.value %}{{ form.arrival_airport}}{% else %}
+                    value="">{% endif %}
+         </div>
+
+          <div class="form-group">
+            <label for="{{ form.airport_to_wab.id_for_label }}">Airport to Wab:</label>
+            <input  type="datetime-local" class="form-control" id="{{ form.airport_to_wab.id_for_label }}"
+             name="{{ form.airport_to_wab.name }}" placeholder="YYYY-MM-DDTHH:MM"
+                     {% if form.airport_to_wab.value %}{{ form.airport_to_wab}}{% else %}
+                    value="">{% endif %}
+          </div>
+
+            <div class="form-group">
+                <label for="{{ form.airport_to_hotel.id_for_label }}">Airport to Hotel:</label>
+                <input type="datetime-local" class="form-control" id="{{ form.airport_to_hotel.id_for_label }}"
+                name="{{ form.airport_to_hotel.name }}" placeholder="YYYY-MM-DDTHH:MM"
+                        {% if form.airport_to_hotel.value %}{{ form.airport_to_hotel }}{% else %}
+                    value="">{% endif %}
+            </div>
+
+          <div class="form-group">
+            <label for="{{ form.hotel_to_wab.id_for_label }}">Hotel to Wab:</label>
+            <input type="datetime-local" class="form-control" id="{{ form.hotel_to_wab.id_for_label }}"
+             name="{{ form.hotel_to_wab.name }}" placeholder="YYYY-MM-DDTHH:MM"
+                     {% if form.hotel_to_wab.value %}{{ form.hotel_to_wab}}{% else %}
+                    value="">{% endif %}
+          </div>
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="{{ form.wab_to_hotel.id_for_label }}">Wab to hotel:</label>
+                <input type="datetime-local" class="form-control" id="{{ form.wab_to_hotel.id_for_label }}"
+                name="{{ form.wab_to_hotel.name }}" placeholder="YYYY-MM-DDTHH:MM"
+                         {% if form.wab_to_hotel.value %}{{ form.wab_to_hotel }}{% else %}
+                    value="">{% endif %}
+        </div>
+      <div class="form-group">
+        <label for="{{ form.wab_to_airport.id_for_label }}">Wab to airport:</label>
+        <input type="datetime-local"  class="form-control" id="{{ form.wab_to_airport.id_for_label }}"
+               name="{{ form.wab_to_airport.name }}" placeholder="YYYY-MM-DDTHH:MM"
+                {% if form.wab_to_airport.value %}{{ form.wab_to_airport}}{% else %}
+                    value="">{% endif %}
+    </div>
+
+     <div class="form-group">
+        <label for="{{ form.hotel_to_airport.id_for_label }}">Hotel to airport:</label>
+        <input type="datetime-local" class="form-control" id="{{ form.hotel_to_airport.id_for_label }}"
+               name="{{ form.hotel_to_airport.name }}" placeholder="YYYY-MM-DDTHH:MM"
+         {% if form.hotel_to_airport.value %}{{ form.hotel_to_airport }}{% else %}value="">
+                    {% endif %}
+    </div>
+
+          <div class="form-group">
+        <label for="{{ form.own_transport.id_for_label }}">Own Transport:</label>
+        {{ form.own_transport }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.parking.id_for_label }}">Parking:</label>
+              {{ form.parking }}
+
+
+      </div>
+      <div class="form-group" style="display: none" id="parking_choice">
+        <label for="{{ form.parking_choice.id_for_label}}">Choice parking:</label>
+        {{ form.parking_choice }}
+
+      </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-md-3 d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+
+</form>
+    <script>
+        function setupCheckbox(checkbox, element) {
+        if (checkbox) {
+            checkbox.addEventListener('change', function () {
+            element.style.display = checkbox.checked ? 'block' : 'none';
+        });
+    }
+}
+         const parkingCheckbox = document.querySelector('input[name="{{ form.parking.name }}"]');
+         const parkingChoice = document.getElementById("parking_choice");
+         setupCheckbox(parkingCheckbox,parkingChoice)
+         if (parkingCheckbox.checked) {
+             parkingChoice.style.display = 'inline';
+         } else {
+             parkingChoice.style.display = 'none';
+         }
+    </script>
+    </body>
+{% endblock %}

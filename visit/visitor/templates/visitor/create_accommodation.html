@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container" style="font-size: 16px; margin-top: 25px;">
+    <form method="post" class="form" action="{% url 'combined_info' pk=visitor.pk %}">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-3">
+                <h4>Accommodation</h4>
+                <div class="form-group">
+                    <label for="{{ form.hotel_name.id_for_label }}">Hotel Name:</label>
+                    <input type="text" class="form-control" id="{{ form.hotel_name.id_for_label }}"
+                        name="{{ form.hotel_name.name }}">
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.requires_invoice.id_for_label }}">Invoice:</label>
+                    {{ form.requires_invoice }}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h4>Meeting Room</h4>
+                <div class="form-group">
+                    <label for="{{ form.name.id_for_label }}">Room Name:</label>
+                    <input type="text" class="form-control" id="{{ form.name.id_for_label }}"
+                        name="{{ form.name.name }}">
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.start_time.id_for_label }}">Start Time:</label>
+                    <input type="datetime-local" class="form-control" id="{{ form.start_time.id_for_label }}"
+                        name="{{ form.start_time.name }}" placeholder="YYYY-MM-DD HH:MM">
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.end_time.id_for_label }}">End Time:</label>
+                    <input type="datetime-local" class="form-control" id="{{ form.end_time.id_for_label }}"
+                        name="{{ form.end_time.name }}" placeholder="YYYY-MM-DD HH:MM">
+                </div>
+                <div style="display: flex; justify-content: space-between">
+                    <div class="form-group">
+                        <label for="{{ form.coffe.id_for_label }}">Coffee:</label>
+                        {{ form.coffe }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.water.id_for_label }}">Water:</label>
+                        {{ form.water }}
+                     </div>
+                </div>
+                <div style="display: flex; justify-content: space-between">
+                    <div class="form-group">
+                        <label for="{{ form.carbonated_drinks.id_for_label }}">Carbonated Drinks:</label>
+                        {{ form.carbonated_drinks }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.cookies.id_for_label }}">Cookies:</label>
+                        {{ form.cookies }}
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between">
+                     <div class="form-group" >
+                        <label for="{{ form.beamer.id_for_label }}">Beamer:</label>
+                        {{ form.beamer }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.flipchart.id_for_label }}">Flipchart:</label>
+                        {{ form.flipchart }}
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between">
+                    <div class="form-group">
+                    <label for="{{ form.stickers.id_for_label }}">Stickers:</label>
+                    {{ form.stickers }}
+                </div>
+                </div>
+
+            </div>
+            <div class="col-md-3">
+                <h4>Safety Needs</h4>
+                <div class="form-group">
+                    <label for="{{ form.need_helmet.id_for_label }}">Helmet:</label>
+                    {{ form.needs_helmet }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.needs_vest.id_for_label }}">Vest:</label>
+                    {{ form.needs_vest }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.needs_shoes.id_for_label }}">Shoes:</label>
+                    {{ form.needs_shoes }}
+                </div>
+                <div class="form-group" id="size_shoes" style="display: none">
+                    <label for="{{ form.size_shoes.id_for_label }}">Size Shoes:</label>
+                    {{ form.size_shoes }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.others.id_for_label }}">Others:</label>
+                        {{form.room_others}}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h4>Security</h4>
+                <div class="form-group">
+                    <label for="{{ form.reception_kpp.id_for_label }}">Reception:</label>
+                    {{ form.reception_kpp }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.access_card_to_kaba.id_for_label }}">Access kaba card:</label>
+                    {{ form.access_card_to_kaba }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.health_safety_training.id_for_label }}">Health training:</label>
+                    {{ form.health_safety_training }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.internet_accesses.id_for_label }}">Internet accesses:</label>
+                    {{ form.internet_accesses }}
+                </div>
+                <div class="row">
+                <div class="form-group" id="meeting_r_others" style="display: none">
+                    <label for="{{ form.others_description.id_for_label }}">Others Description:</label>
+                    <textarea class="form-control" id="{{ form.others_description.id_for_label }}"
+                        name="{{ form.others_description.name }}"></textarea>
+                </div>
+            </div>
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,488 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}">
+
+
+    <title>Witte</title>
+
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <img src="{% static 'logo/WITTE-4C_300dpi_6cm.jpg' %}" style="height: 40px; width: 150px">
+            </li>
+
+        </ul>
+    </div>
+</nav>
+{% block content %}
+
+{% endblock %}
+<script src="{% static 'app.js' %}"></script>
+</body>
+<script>
+    setTimeout(function () {
+        let messages = document.querySelector('.messages');
+        if (messages) {
+            messages.style.display = 'none';
+        }
+    }, 2000);
+
+    function setupCheckbox(checkbox, element) {
+        if (checkbox) {
+            checkbox.addEventListener('change', function () {
+                element.style.display = checkbox.checked ? 'block' : 'none';
+            });
+        }
+    }
+
+    const parkingCheckbox = document.querySelector('input[name="{{ form.parking.name }}"]');
+    const parkingChoice = document.getElementById("parking_choice");
+    setupCheckbox(parkingCheckbox, parkingChoice);
+
+    const needsShoesCheckbox = document.querySelector('input[name="{{ form.needs_shoes.name }}"]');
+    const inputSizeShoes = document.getElementById("size_shoes");
+    setupCheckbox(needsShoesCheckbox, inputSizeShoes);
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const restaurantInfo = document.getElementById('restaurant_info');
+        const reservationCheckbox = document.querySelector('input[name="reservation"]');
+        const restaurantOthers = document.getElementById('restaurant_others');
+        const othersCheckbox = document.querySelector('input[name="others"]');
+        if (reservationCheckbox.checked) {
+            restaurantInfo.style.display = "block"
+        } else {
+            restaurantInfo.style.display = "none"
+        }
+
+        if (restaurantInfo && reservationCheckbox) {
+            reservationCheckbox.addEventListener('change', function () {
+                restaurantInfo.style.display = reservationCheckbox.checked ? 'block' : 'none';
+            });
+
+            if (othersCheckbox) {
+                othersCheckbox.addEventListener('change', function () {
+                    restaurantOthers.style.display = othersCheckbox.checked && reservationCheckbox.checked ? 'block' : 'none';
+                });
+            }
+        }
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const outMeetingInfo = document.getElementById('out_meeting_info');
+        const meetingCheckbox = document.querySelector('input[name="meeting"]');
+        const transportCheckbox = document.querySelector('input[name="transport"]');
+        const meetingTrChoice = document.querySelector('.meeting_tr_choice');
+        const tr_choice_meeting = document.querySelector('#meeting_tr_choice_btn');
+        if (meetingCheckbox.checked) {
+            outMeetingInfo.style.display = 'block'
+        } else {
+            outMeetingInfo.style.display = 'none'
+        }
+        if (transportCheckbox.checked) {
+            tr_choice_meeting.style.display = 'block'
+        } else {
+            tr_choice_meeting.style.display = 'none'
+        }
+
+        if (outMeetingInfo && meetingCheckbox) {
+
+            meetingCheckbox.addEventListener('change', function () {
+                outMeetingInfo.style.display = meetingCheckbox.checked ? 'block' : 'none';
+
+                if (meetingCheckbox.checked) {
+                    transportCheckbox.addEventListener('change', function () {
+                        meetingTrChoice.style.display = transportCheckbox.checked ? 'block' : 'none';
+                        tr_choice_meeting.style.display = transportCheckbox.checked ? 'block' : 'none';
+
+                    });
+                } else {
+                    transportCheckbox.removeEventListener('change', null);
+                }
+            });
+        }
+    });
+
+
+    const anotherVisitorCheckbox = document.querySelector('input[name="another_visitor"]');
+    const addVisitorDiv = document.getElementById('add_visitor');
+
+    if (anotherVisitorCheckbox) {
+        if (anotherVisitorCheckbox.checked) {
+            addVisitorDiv.style.display = "block";
+        } else {
+            addVisitorDiv.style.display = "none";
+        }
+        anotherVisitorCheckbox.addEventListener('change', function () {
+            addVisitorDiv.style.display = anotherVisitorCheckbox.checked ? 'block' : 'none';
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const visitorSelect = document.getElementById('visitorSelect');
+        const card_visitor_info = document.getElementById('card_visitor');
+        const card_transport_visitor = document.getElementById('card_transport');
+        const card_accommodation = document.getElementById('card_accommodation');
+        const card_security_safety = document.getElementById('card_security_safety');
+        const card_meeting_room = document.getElementById('card_meeting_room');
+        const card_catering = document.getElementById('card_catering');
+        const card_addition_vis = document.getElementById('card_addition_vis');
+        {#const card_other_req = document.getElementById('card_other_req');#}
+        const card_meeting_planner = document.getElementById('card_meeting_planner');
+        const card_restaurant_reservation = document.getElementById('card_restaurant_reservation');
+        const cardElements = document.querySelectorAll('.card');
+        cardElements.forEach((card) => {
+
+            card.style.border = '1px solid #333';
+
+            card.style.border = '2px solid #3498db';
+            card.style.borderRadius = '5px';
+            card.style.padding = '5px';
+            card.style.boxShadow = '2px 2px 5px #888';
+            // Други стилове, които искате да добавите
+        });
+
+
+        function clearCardContents() {
+            card_security_safety.innerHTML = '';
+            card_visitor_info.innerHTML = '';
+            card_accommodation.innerHTML = '';
+            card_transport_visitor.innerHTML = '';
+            card_meeting_room.innerHTML = '';
+            card_catering.innerHTML = '';
+            card_addition_vis.innerHTML = '';
+            {#card_other_req.innerHTML = '';#}
+            card_meeting_planner.innerHTML = '';
+            card_restaurant_reservation.innerHTML = '';
+        }
+
+        function handleCategory(card, values) {
+            labels = {
+                'first_name': 'First name',
+                'last_name': 'Last name',
+                'position': 'Position',
+                'purpose_of_visit': 'Purpose of visit',
+                'priority': 'Priority',
+                'company_name': 'Company name',
+                'arrival_airport': 'Arrival to airport',
+                'airport_to_wab': 'From airport to wab',
+                'airport_to_hotel': 'From airport to hotel',
+                'hotel_to_wab': 'Form hotel to wab',
+                'own_transport': 'Own transport',
+                'parking': 'Parking',
+                'parking_choice': 'Choice of parking',
+                'wab_to_airport': 'From wab to airport',
+                'hotel_to_airport': 'From hotel to airport',
+                'hotel_name': 'Hotel name',
+                'requires_invoice': 'Requires invoice',
+                'needs_helmet': 'Helmet',
+                'needs_vest': 'Vest',
+                'needs_shoes': 'Shoes',
+                'size_shoes': 'Size shoes',
+                'reception_kpp': 'Reception on kpp',
+                'access_card_to_kaba': 'Access to Kaba',
+                'health_safety_training': 'Health and safety training',
+                'internet_accesses': 'Internet accesses',
+                'name': 'Room name',
+                'start_time': 'Start time',
+                'end_time': 'End time',
+                'coffe': 'Coffe',
+                'water': 'Water',
+                'carbonated_drinks': 'Carbonated drinks',
+                'cookies': 'Cookies',
+                'beamer': 'Beamer',
+                'flipchart': 'Flipchart',
+                'stickers': 'Stickers',
+                'room_others': 'Room additions',
+                'others_description': 'Others description',
+                'send_menu_to_requester': 'Send menu to requester',
+                'choose_menu_for_guest': "Select from menu at the expense of WAB",
+                'free_choice_for_company': 'Free choice - at the expense of WAB',
+                'catering': 'Catering',
+                'own_choice_menu': "Menu selection from the guest's own expense",
+                'own_free_choice': 'Free choice - at your own expense',
+                'meeting': 'Meeting',
+                'address': 'Address',
+                'destination': 'Destination',
+                'transport': 'Transport',
+                'numbers_of_people': 'Number of peoples',
+                'transport_choice': 'Choices transport',
+                'reservation': 'Reservation',
+                'restaurant_name': 'Restaurant name',
+                'date_time': 'Date time',
+                'second_name': 'Second_name',
+                'company': 'Company',
+                'number_of_people': 'Number of peoples',
+                'others_thinks': 'Others thinks',
+                'others': 'Others',
+                'wab_to_hotel': 'Wab to hotel',
+            }
+
+            if (values[0]) {
+                const categoryValues = values[0];
+
+                for (const [catKey, catValue] of Object.entries(categoryValues)) {
+                    if (catKey === 'id' || catKey === 'visitor_id' || catValue == null || catValue === false || catValue === '') {
+                        continue;
+                    }
+
+                    const listItem = document.createElement('li');
+                    let labelElement = document.createElement('input');
+                    let valueElement = document.createElement('input')
+                    valueElement.value = catValue;
+                    console.log('<><><><><>',catValue)
+                    labelElement.value = labels[catKey]
+
+
+                    labelElement.style.width = '100%'
+                    labelElement.style.border = 'none'
+                    labelElement.readOnly = true
+
+
+                    valueElement.style.width = '100%';
+                    valueElement.style.border = 'none';
+                    valueElement.readOnly = true
+
+                    listItem.appendChild(labelElement);
+                    listItem.appendChild(valueElement);
+                    listItem.style.border = '2px solid #3498db';
+                    listItem.style.borderRadius = '5px';
+                    listItem.style.padding = '5px';
+                    listItem.style.boxShadow = '2px 2px 5px #888';
+
+                    listItem.appendChild(labelElement);
+                    listItem.appendChild(valueElement);
+                    card.appendChild(listItem);
+                }
+            }
+        }
+
+        visitorSelect.style.border = "1px solid #ccc";
+        visitorSelect.style.borderRadius = "5px";
+
+        visitorSelect.addEventListener("change", function () {
+                const selectedValue = visitorSelect.value;
+                clearCardContents();
+
+                if (selectedValue) {
+                    fetch(`get_visitor_info/${selectedValue}/`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Грешка при извличането на информацията за посетителя.');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                                const visitorData = data;
+                                console.log(visitorData)
+                                for (const [vkey, vvalue] of Object.entries(visitorData)) {
+                                    for (const [visitorKey, visitorValue] of Object.entries(vvalue)) {
+                                        if (visitorKey !== "id" && !Array.isArray(visitorValue) && visitorValue !== '') {
+                                            labels = {
+                                                'first_name': 'First name',
+                                                'last_name': 'Last name',
+                                                'position': 'Position',
+                                                'purpose_of_visit': 'Purpose of visit',
+                                                'priority': 'Priority',
+                                                'company_name': 'Company name'
+                                            }
+
+                                            const listItem = document.createElement('li');
+                                            listItem.style.border = '2px solid #3498db';
+                                            listItem.style.borderRadius = '5px';
+                                            listItem.style.padding = '5px';
+                                            listItem.style.boxShadow = '2px 2px 5px #888';
+                                            const textNode = document.createTextNode(`${labels[visitorKey]}: ${visitorValue}`);
+                                            listItem.appendChild(textNode);
+                                            card_visitor_info.appendChild(listItem);
+                                        } else {
+                                            if (visitorKey === 'transportation') {
+                                                handleCategory(card_transport_visitor, visitorValue);
+                                            } else if (visitorKey === 'accommodation') {
+                                                handleCategory(card_accommodation, visitorValue);
+                                            } else if (visitorKey === 'safety_needs' || visitorKey === "security_info") {
+                                                handleCategory(card_security_safety, visitorValue);
+                                            } else if (visitorKey === 'visitor_meeting') {
+                                                handleCategory(card_meeting_room, visitorValue);
+                                            } else if (visitorKey === 'visitor_catering') {
+                                                handleCategory(card_catering, visitorValue);
+                                            } else if (visitorKey === 'visitor_out_office') {
+                                                handleCategory(card_meeting_planner, visitorValue);
+                                            } else if (visitorKey === 'visitor_restaurant') {
+                                                handleCategory(card_restaurant_reservation, visitorValue);
+                                            } else if (visitorKey === 'visitor_additional') {
+
+                                                {#handleCategory(card_addition_vis, visitorValue);#}
+
+                                                const selectElement = document.createElement('select');
+                                                selectElement.name = 'additional_visitor';
+                                                selectElement.style.padding = '3px';
+                                                selectElement.style.margin = '15px';
+                                                selectElement.id = 'additional_visitor_select';
+                                                const emptyOption = document.createElement('option');
+                                                emptyOption.value = ''; // Няма стойност
+                                                emptyOption.textContent = 'Изберете посетител'; // Текстът на празната опция
+                                                selectElement.appendChild(emptyOption);
+
+                                                for (const a_v of visitorValue) {
+                                                    const option = document.createElement('option');
+                                                    option.value = a_v.id;
+                                                    option.textContent = `${a_v.first_name} ${a_v.second_name}`;
+                                                    selectElement.appendChild(option);
+                                                }
+                                                card_addition_vis.append(selectElement)
+                                                const firstNameInput = document.createElement('input');
+                                                firstNameInput.type = 'text';
+                                                firstNameInput.id = 'first_name';
+                                                firstNameInput.placeholder = 'First Name';
+                                                firstNameInput.readOnly = true;
+                                                firstNameInput.style.border = '2px solid #3498db';
+                                                firstNameInput.style.borderRadius = '5px';
+                                                firstNameInput.style.padding = '5px';
+                                                firstNameInput.style.boxShadow = '2px 2px 5px #888';
+
+                                                const lastNameInput = document.createElement('input');
+                                                lastNameInput.type = 'text';
+                                                lastNameInput.id = 'last_name';
+                                                lastNameInput.placeholder = 'Last Name';
+                                                lastNameInput.readOnly = true;
+                                                lastNameInput.style.border = '2px solid #3498db';
+                                                lastNameInput.style.borderRadius = '5px';
+                                                lastNameInput.style.padding = '5px';
+                                                lastNameInput.style.boxShadow = '2px 2px 5px #888';
+                                                lastNameInput.style.marginTop = '3px'
+
+                                                const companyInput = document.createElement('input');
+                                                companyInput.type = 'text';
+                                                companyInput.id = 'company';
+                                                companyInput.placeholder = 'Company';
+                                                companyInput.style.border = '2px solid #3498db';
+                                                companyInput.style.borderRadius = '5px';
+                                                companyInput.style.padding = '5px';
+                                                companyInput.style.boxShadow = '2px 2px 5px #888';
+                                                companyInput.style.marginTop = '3px'
+                                                card_addition_vis.appendChild(firstNameInput);
+                                                card_addition_vis.appendChild(lastNameInput);
+                                                card_addition_vis.appendChild(companyInput);
+                                                companyInput.readOnly = true;
+                                                let selectedValue = null
+                                                selectElement.addEventListener("change", function () {
+                                                    const selectedValue = selectElement.value
+                                                    if (selectedValue) {
+                                                        const selectedVisitor = data.visitor.visitor_additional.find(a_v => a_v.id == selectedValue)
+                                                        if (selectedVisitor) {
+                                                            firstNameInput.value = selectedVisitor.first_name;
+                                                            lastNameInput.value = selectedVisitor.second_name;
+                                                            companyInput.value = selectedVisitor.company;
+                                                        } else {
+                                                            // Изчистване на текстовите полета, ако не се намери съответен посетител
+                                                            firstNameInput.value = '';
+                                                            lastNameInput.value = '';
+                                                            companyInput.value = '';
+                                                        }
+                                                    } else {
+                                                        firstNameInput.value = '';
+                                                        lastNameInput.value = '';
+                                                        companyInput.value = '';
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        )
+                        .catch(error => {
+                            alert(error.message);
+                        });
+
+
+                } else {
+                    clearCardContents();
+                }
+            }
+        )
+        ;
+        const othersCheckbox = document.querySelector('input[name="{{ form.room_others.name }}');
+        const formGroupOthers = document.getElementById("meeting_r_others");
+        if (othersCheckbox) {
+            othersCheckbox.addEventListener('change', function () {
+                formGroupOthers.style.display = othersCheckbox.checked ? 'block' : 'none';
+            });
+        }
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        const visitorSelect = document.getElementById('visitorSelect');
+        const delBtn = document.querySelector('.del-btn');
+
+        function updateDelButtonHref() {
+            const selectedValue = visitorSelect.value;
+            if (selectedValue) {
+                delBtn.href = `delete_visitor/${selectedValue}`;
+            } else {
+                delBtn.href = "#";
+            }
+        }
+
+        visitorSelect.addEventListener("click", updateDelButtonHref);
+        updateDelButtonHref();
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        const visitorSelect = document.getElementById('visitorSelect');
+        const editButton = document.querySelector('.edit-button');
+
+        function updateEditButtonHref() {
+            const selectedValue = visitorSelect.value;
+            if (selectedValue) {
+                editButton.href = `edit_visitor/${selectedValue}`;
+            } else {
+                editButton.href = "#";
+            }
+        }
+
+        visitorSelect.addEventListener("change", updateEditButtonHref);
+        updateEditButtonHref();
+    });
+    const othersCheckbox = document.querySelector('input[name="{{ form.room_others.name }}');
+    const formGroupOthers = document.getElementById("meeting_r_others");
+
+    function handleOthersCheckboxChange() {
+        if (othersCheckbox.checked) {
+            formGroupOthers.style.display = 'block';
+        } else {
+            formGroupOthers.style.display = 'none';
+        }
+    }
+
+    if (othersCheckbox) {
+        handleOthersCheckboxChange();
+        othersCheckbox.addEventListener('change', handleOthersCheckboxChange);
+    } else {
+        formGroupOthers.style.display = 'none';
+    }
+
+
+</script>
+</html>
+

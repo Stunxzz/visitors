@@ -1,0 +1,424 @@
+{% extends 'base.html' %}
+{% load  static %}
+{% block content %}
+    <body>
+    <div class="container" style="margin-top: 20px;">
+        <form method="post" action="{% url 'edit_last_form' visitor.id %}">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Restaurant reservation</h4>
+                    <div class="form-group">
+                        {{ form.reservation.label_tag }}
+                        {{ form.reservation }}
+                    </div>
+                    <div style="display: none" id="restaurant_info">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ form.restaurant_name.label_tag }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.number_of_people.label_tag }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ form.restaurant_name }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.number_of_people }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form.date_time.label_tag }}
+                            <input type="datetime-local" class="form-control" name="{{ form.date_time.name }}"
+                                   id="{{ form.date_time.id }}" placeholder="YYYY-MM-DDTHH:MM"{% if form.date_time.value %}
+                                   {{ form.date_time}}{% else %}value="">{% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.others.label_tag }}
+                            {{ form.others }}
+                        </div>
+
+                        <div class="form-group" id="restaurant_others" style="display: none;">
+                            {{ form.others_thinks.label_tag }}
+                            {{ form.others_thinks }}
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h4>Out of office meeting</h4>
+                    <div class="form-group">
+                        {{ form.meeting.label_tag }}
+                        {{ form.meeting }}
+                    </div>
+
+                    <div id="out_meeting_info" style="display: none">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ form.address.label_tag }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.destination.label_tag }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.numbers_of_people.label_tag }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.transport.label_tag }}
+                                    </div>
+                                    <div class="meeting_tr_choice" style="display: none">
+                                        <div class="form-group">
+                                            {{ form.transport_choice.label_tag }}
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        {{ form.address }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.destination }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.numbers_of_people }}
+                                    </div>
+                                    <div class="form-group" style="margin-top: 22px">
+                                        {{ form.transport }}
+                                    </div>
+                                    <div id="meeting_tr_choice_btn" style="display: none;margin-top: 22px ">
+                                        <div class="form-group">
+                                            {{ form.transport_choice }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Catering</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                {{ form.send_menu_to_requester.label_tag }}
+                            </div>
+                            <div class="form-check">
+                                {{ form.choose_menu_for_guest.label_tag }}
+                            </div>
+                            <div class="form-check">
+                                {{ form.free_choice_for_company.label_tag }}
+                            </div>
+                            <div class="form-check">
+                                {{ form.catering.label_tag }}
+                            </div>
+                            <div class="form-check">
+                                {{ form.own_choice_menu.label_tag }}
+                            </div>
+
+                            <div class="form-check">
+                                {{ form.own_free_choice.label_tag }}
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                {{ form.send_menu_to_requester }}
+                            </div>
+                            <div class="form-check" style="margin-top: 8px">
+                                {{ form.choose_menu_for_guest }}
+                            </div>
+                            <div class="form-check" style="margin-top: 8px">
+                                {{ form.free_choice_for_company }}
+                            </div>
+                            <div class="form-check" style="margin-top: 8px">
+                                {{ form.catering }}
+                            </div>
+                            <div class="form-check" style="margin-top: 8px">
+                                {{ form.own_choice_menu }}
+                            </div>
+                            <div class="form-check" style="margin-top: 8px">
+                                {{ form.own_free_choice }}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    <h4>Guests of the visitor</h4>
+                    <div class="form-group">
+                        {{ form.another_visitor.label_tag }}
+                        {{ form.another_visitor }}
+                    </div>
+                    <div id="add_visitor" style="display: none">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.first_name.label_tag }}
+                                    {{ form.first_name }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.second_name.label_tag }}
+                                    {{ form.second_name }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.company.label_tag }}
+                                    {{ form.company }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.user.label_tag }}
+                                    {{ form.user }}
+                                </div>
+                                    <select name="additional_visitor_id" style="padding: 3px; margin: 15px;"
+                                            id="additional_visitor">
+                                        <option value="" selected disabled hidden>All additional visitors</option>
+                                        {% for additional_visitor in visitor.additionalvisitor_set.all %}
+                                            <option value="{{ additional_visitor.id }}-{{ visitor.id }}">{{ additional_visitor.first_name }} {{ additional_visitor.second_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <div style="display: flex">
+                                        <a id="createAdditionalVisitorButton" class="btn btn-primary"
+                                           style="margin-top: 15px; margin-right: 10px"
+                                           data-visitor-id="{{ visitor.id }}">Create</a>
+                                        <a id="editAdditionalVisitorButton" class="btn btn-primary"
+                                           style="margin-top: 15px" data-visitor-id="{{ visitor.id }}">Save</a>
+                                        <a id="deleteAdditionalVisitorButton" class="btn btn-danger"
+                                            style="margin-top: 15px;margin-left: 10px" data-visitor-id="{{ visitor.id }}">Delete</a>
+                                    </div>
+
+                                </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row justify-content-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+        </form>
+
+    </div>
+    <script>
+        const meetingField = document.querySelector('input[name="meeting"]');
+        const outMeetingInfo = document.getElementById("out_meeting_info");
+
+        function toggleMeetingInfo() {
+            if (meetingField.checked) {
+                outMeetingInfo.style.display = "block";
+            } else {
+                outMeetingInfo.style.display = "none";
+            }
+            const transportCheckbox = document.querySelector('input[name="transport"]');
+            const meetingTrChoice = document.querySelector('.meeting_tr_choice');
+            const tr_choice_meeting = document.querySelector('#meeting_tr_choice_btn')
+
+            if (transportCheckbox.checked) {
+                tr_choice_meeting.style.display = "block";
+            } else {
+                tr_choice_meeting.style.display = "none";
+            }
+            transportCheckbox.addEventListener('change', function () {
+                if (transportCheckbox.checked) {
+                    meetingTrChoice.style.display = 'block';
+                    tr_choice_meeting.style.display = 'block';
+                } else {
+                    meetingTrChoice.style.display = 'none';
+                    tr_choice_meeting.style.display = 'none';
+                }
+            });
+        }
+
+        meetingField.addEventListener("change", toggleMeetingInfo);
+        toggleMeetingInfo();
+        const restaurantInfo = document.getElementById('restaurant_info');
+        const reservationCheckbox = document.querySelector('input[name="reservation"]');
+        if (reservationCheckbox.checked) {
+            restaurantInfo.style.display = 'block';
+            const restaurantOthers = document.getElementById('restaurant_others');
+            const othersCheckbox = document.querySelector('input[name="others"]');
+            if (othersCheckbox.checked) {
+                restaurantOthers.style.display = 'block';
+            } else {
+                restaurantOthers.style.display = 'none';
+            }
+            othersCheckbox.addEventListener('change', function () {
+                if (othersCheckbox.checked) {
+                    restaurantOthers.style.display = 'block';
+                } else {
+                    restaurantOthers.style.display = 'none';
+                }
+            });
+        } else {
+            restaurantInfo.style.display = 'none';
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            const createButton = document.getElementById("createAdditionalVisitorButton");
+            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value
+
+            createButton.addEventListener("click", function () {
+                console.log("><><><><><><><>")
+                const visitorId = createButton.getAttribute("data-visitor-id");
+                console.log(visitorId)
+                const firstName = document.getElementById("id_first_name").value;
+                console.log(firstName)
+                const secondName = document.getElementById("id_second_name").value;
+                console.log(secondName)
+                const company = document.getElementById("id_company").value;
+                console.log(company)
+                fetch(`{% url 'create_additional_visitor' visitor.id%}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken,
+                    },
+                    body: JSON.stringify({
+                        visitor_id: visitorId,
+                        first_name: firstName,
+                        second_name: secondName,
+                        company: company
+                    })
+
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            alert(data.message);
+                            document.getElementById("id_first_name").value = ''
+                             document.getElementById("id_second_name").value =''
+                             document.getElementById("id_company").value =''
+                            location.reload();
+                        } else {
+                            alert("Грешка при създаването на посетителя.");
+                        }
+                    });
+                console.log('ERRRRORRRRR')
+
+            });
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            const selectElement = document.getElementById("additional_visitor");
+            const edit_additional_visitor = document.getElementById('editAdditionalVisitorButton')
+
+            selectElement.addEventListener('change', function () {
+                const selectedOption = selectElement.options[selectElement.selectedIndex];
+                const selectedValue = selectedOption.value;
+                let [additionalVisitorId, mainVisitorId] = selectedValue.split("-");
+
+                console.log(additionalVisitorId)
+                console.log(mainVisitorId)
+                fetch(`{% url 'get_visitor_info' visitor.id%}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        for (let visitor of  data.visitor.visitor_additional) {
+                            if (parseInt(visitor.id) ==additionalVisitorId){
+                                console.log(visitor.first_name)
+                                document.getElementById("id_first_name").value = visitor.first_name;
+                                document.getElementById("id_second_name").value = visitor.second_name;
+                                document.getElementById("id_company").value = visitor.company;
+                                break
+                            }
+                        }
+                    });
+            })
+        });
+        const additional_visitor_edt_btn = document.getElementById('editAdditionalVisitorButton')
+        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value
+        additional_visitor_edt_btn.addEventListener('click',()=>{
+            const updatedFirstName = document.getElementById('id_first_name').value;
+            const updatedSecondName = document.getElementById('id_second_name').value;
+            const updatedCompany = document.getElementById('id_company').value;
+            const selectElement = document.getElementById("additional_visitor");
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const selectedValue = selectedOption.value;
+            let [additionalVisitorId, mainVisitorId] = selectedValue.split("-");
+             fetch(`{% url 'update_additional_visitor_info' visitor.pk %}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify({
+            first_name: updatedFirstName,
+            second_name: updatedSecondName,
+            company: updatedCompany,
+            visitor_id:mainVisitorId,
+            additional_visitor_id:additionalVisitorId
+        })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message);
+                location.reload();
+            } else {
+                alert("Грешка при редактирането на посетителя.");
+            }
+        });
+
+            })
+        const del_additional_visitor_btn = document.getElementById('deleteAdditionalVisitorButton')
+
+        del_additional_visitor_btn.addEventListener("click", ()=>{
+            console.log("<><><><><><>")
+            const selectElement = document.getElementById("additional_visitor");
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const selectedValue = selectedOption.value;
+            let [additionalVisitorId, mainVisitorId] = selectedValue.split("-");
+            console.log(additionalVisitorId)
+            console.log(mainVisitorId)
+            fetch(`{% url 'delete_additional_visitor' visitor.pk %}`, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            body: JSON.stringify({
+                additional_visitor_id: additionalVisitorId,
+                main_visitor_id: mainVisitorId,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message);
+                document.getElementById('id_first_name').value = ""
+                document.getElementById('id_second_name').value = ""
+                document.getElementById('id_company').value = ""
+                location.reload();
+            } else {
+                alert("Грешка при изтриването на посетителя.");
+        }
+    });
+
+
+        })
+    </script>
+    </body>
+{% endblock %}

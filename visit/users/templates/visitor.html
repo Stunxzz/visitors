@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="text-center">
+        <a href="{% url 'create_visitor'%}" class="btn btn-primary btn-lg">Visitor</a>
+        <a href="/guest" class="btn btn-secondary btn-lg">Guest</a>
+    </div>
+{% endblock %}
