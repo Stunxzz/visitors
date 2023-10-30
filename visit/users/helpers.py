@@ -11,6 +11,7 @@ class LdapBase:
         self.user = user
         self.password = password
 
+#asd test1 gitlab
 
 class LdapHashBase64:
     @staticmethod
