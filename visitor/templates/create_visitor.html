@@ -1,0 +1,70 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block img%}
+{%endblock%}
+{%block content%}
+<div class="container" style="width: 50%;">
+    <form method="post" action="{% url 'create_visitor' %}" class="mt-4" style="font-weight:bold">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_first_name">First name</label>
+            <input type="text" class="form-control" id="id_first_name" name="first_name">
+        </div>
+        <div class="form-group">
+            <label for="id_last_name">Last name</label>
+            <input type="text" class="form-control" id="id_last_name" name="last_name">
+        </div>
+        <div class="form-group">
+            <label for="id_priority">Priority</label>
+            <select class="form-control" id="id_priority" name="priority">
+                <option value="vip guest">Vip Guest</option>
+                <option value="auditor">Auditor</option>
+                <option value="inspection institutions">Inspection Institutions</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="id_position">Position</label>
+            <input type="text" class="form-control" id="id_position" name="position" >
+        </div>
+        <div class="form-group">
+            <label for="id_purpose_of_visit">Purpose of Visit</label>
+            <textarea class="form-control" id="id_purpose_of_visit" name="purpose_of_visit" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="id_company_name">Company Name</label>
+            <input type="text" class="form-control" id="id_company_name" name="company_name">
+        </div>
+        <div class="form-group">
+            <label for="id_day_of_arrival">Day of Arrival</label>
+            <input type="date" class="form-control" id="id_day_of_arrival" name="day_of_arrival">
+        </div>
+        <div class="form-group">
+            <label for="id_day_of_departure">Day of Departure</label>
+            <input type="date" class="form-control" id="id_day_of_departure" name="day_of_departure">
+        </div>
+
+        <button type="submit" style="margin-top:10px; width: 100%" class="btn btn-success btn-lg btn-block">Create
+        </button>
+    </form>
+</div>
+<script>
+    const arrivalInput = document.getElementById('id_day_of_arrival');
+    const departureInput = document.getElementById('id_day_of_departure');
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowFormatted = tomorrow.toISOString().split('T')[0];
+    arrivalInput.min = tomorrowFormatted;
+    arrivalInput.addEventListener('change', function() {
+        departureInput.min = arrivalInput.value;
+        if (departureInput.value < arrivalInput.value) {
+            departureInput.value = arrivalInput.value;
+        }
+    });
+
+    departureInput.addEventListener('change', function() {
+        if (departureInput.value < arrivalInput.value) {
+            arrivalInput.value = departureInput.value;
+        }
+    });
+</script>
+{%endblock%}

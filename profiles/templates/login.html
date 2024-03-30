@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{%load static%}
+{%block content%}
+
+-
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+    }
+    </style>
+    <style>
+    #loginForm {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-image: url("{% static 'img/wt.png' %}");
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+        font-size: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        width: 500px;
+        height: 250px;
+    }
+
+    #loginForm input[type="text"],
+    #loginForm input[type="password"] {
+        display: flex;
+        justify-content: space-between;
+        width: 400px
+    }
+</style>
+
+</style>
+<div class="container">
+    <form method="post" action="{% url 'login' %}" id="loginForm">
+        {% csrf_token %}
+        {{form.as_p}}
+        <div>
+            <button style="width: 200px" type="submit" class="btn btn-primary">LogIn</button>
+        </div>
+    </form>
+</div>
+{%endblock%}
+
+

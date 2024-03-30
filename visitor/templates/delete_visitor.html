@@ -1,0 +1,60 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block img%}
+{%endblock%}
+{%block content%}
+<div class="container" style="width: 50%;">
+    <form method="post"action="{% url 'delete_visitor' visitor_id=visitor_id %}" class="mt-4" style="font-weight:bold;">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_first_name">First name</label>
+            <input type="text" class="form-control" id="id_first_name" name="first_name"
+                   value="{{ form.instance.first_name }}">
+        </div>
+        <div class="form-group">
+            <label for="id_last_name">Last name</label>
+            <input type="text" class="form-control" id="id_last_name" name="last_name"
+                   value="{{ form.instance.last_name }}">
+        </div>
+        <div class="form-group">
+    <label for="id_priority">Priority</label>
+    <select class="form-control" id="id_priority" name="priority">
+        <option value="vip guest" {% if form.instance.priority == 'vip guest' %}selected{% endif %}>Vip Guest</option>
+        <option value="auditor" {% if form.instance.priority == 'auditor' %}selected{% endif %}>Auditor</option>
+        <option value="inspection institutions" {% if form.instance.priority == 'inspection institutions' %}selected{% endif %}>Inspection Institutions</option>
+    </select>
+</div>
+        <div class="form-group">
+            <label for="id_position">Position</label>
+            <input type="text" class="form-control" id="id_position" name="position"
+                   value="{{ form.instance.position }}">
+        </div>
+        <div class="form-group">
+            <label for="id_purpose_of_visit">Purpose of Visit</label>
+            <textarea class="form-control" id="id_purpose_of_visit" name="purpose_of_visit" rows="3">{{ form.instance.purpose_of_visit }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="id_company_name">Company Name</label>
+            <input type="text" class="form-control" id="id_company_name" name="company_name"
+                   value="{{ form.instance.company_name }}">
+        </div>
+        <div class="form-group">
+            <label for="id_day_of_arrival">Day of Arrival</label>
+            <input type="hidden" id="id_day_of_arrival" name="day_of_arrival"
+                   value="{{ form.instance.day_of_arrival }}">
+            <input type="date" class="form-control" id="arrival_date" value="{{ form.instance.day_of_arrival|date:'Y-m-d' }}"
+                   onchange="updateHiddenDateFields()">
+        </div>
+        <div class="form-group">
+            <label for="id_day_of_departure">Day of Departure</label>
+            <input type="hidden" id="id_day_of_departure" name="day_of_departure"
+                   value="{{ form.instance.day_of_departure }}">
+            <input type="date" class="form-control" id="departure_date" value="{{ form.instance.day_of_departure|date:'Y-m-d'}}"
+                   onchange="updateHiddenDateFields()">
+        </div>
+
+        <button type="submit" style="margin-top:10px; width: 100%" class="btn btn-danger btn-lg btn-block">Save
+        </button>
+    </form>
+</div>
+{%endblock%}
