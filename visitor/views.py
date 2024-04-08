@@ -1,6 +1,8 @@
+import json
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, HttpResponseRedirect
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
@@ -10,6 +12,11 @@ from visitor.models import Visitor, MeetingRoom
 
 class MyVisitors(LoginRequiredMixin,TemplateView):
     template_name = 'table.html'
+    login_url = 'login'
+
+
+class MyVisitorsMeetings(LoginRequiredMixin,TemplateView):
+    template_name = 'meeting_table.html'
     login_url = 'login'
 
 
@@ -35,19 +42,6 @@ class UserVisitorsJsonView(View):
         visitors_data = list(visitors)
 
         return JsonResponse(visitors_data, safe=False)
-
-
-class AddMeetingRoomToVisitorView(LoginRequiredMixin, CreateView):
-    model = MeetingRoom
-    form_class = MeetingRoomForm
-    template_name = 'add_meeting_room.html'
-
-    def form_valid(self, form):
-        current_user = self.request.user
-        last_visitor = Visitor.objects.filter(user=current_user).last()
-        print(last_visitor.id)
-        form.instance.visitor_id = last_visitor.id
-        return super().form_valid(form)
 
 
 class EditVisitorView(LoginRequiredMixin, UpdateView):
@@ -82,3 +76,95 @@ class DeleteVisitorView(LoginRequiredMixin, DeleteView):
         visitor = Visitor.objects.get(pk=visitor_id)
         visitor.delete()
         return HttpResponseRedirect(self.get_success_url())
+
+
+class CreateMeetingRoomView(View):
+    def get(self, request, visitor_id):
+        visitor = get_object_or_404(Visitor, pk=visitor_id)
+        day_of_arrival = visitor.day_of_arrival.strftime('%Y-%m-%d')
+        print(day_of_arrival)
+        day_of_departure = visitor.day_of_departure.strftime('%Y-%m-%d')
+        print(day_of_departure)
+        form = MeetingRoomForm()
+        return render(request, 'meeting_room.html', {'form': form,
+                                                     'visitor_id': visitor_id,
+                                                     'day_of_arrival': day_of_arrival,
+                                                     'day_of_departure': day_of_departure
+                                                     })
+
+    def post(self, request, visitor_id):
+        form = MeetingRoomForm(request.POST)
+        if form.is_valid():
+            last_visitor = get_object_or_404(Visitor, pk=visitor_id)
+            meeting_room = form.save(commit=False)
+            meeting_room.visitor = last_visitor
+            meeting_room.save()
+            return redirect('calendar')
+        return render(request, 'meeting_room.html', {'form': form})
+
+
+class UserMeetingRoomsJsonView(View):
+    def get(self, request, visitor_id, *args, **kwargs):
+        user = request.user
+        visitor = get_object_or_404(Visitor, pk=visitor_id, user=user)
+        meeting_rooms = MeetingRoom.objects.filter(visitor=visitor)
+        json_meeting_rooms = []
+        for room in meeting_rooms:
+            json_room = {
+                'id': room.id,
+                'name': room.name,
+                'date': room.start_time.strftime('%d/%m/%y'),
+                'start_time': room.start_time.strftime('%H:%M:%S'),
+                'end_time': room.end_time.strftime('%H:%M:%S'),
+
+            }
+            json_meeting_rooms.append(json_room)
+
+        return JsonResponse(json_meeting_rooms, safe=False)
+
+
+class CalendarView(TemplateView):
+    template_name = 'calendar.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        visitor_events = []
+        meeting_events = []
+        for visitor in Visitor.objects.filter(user=self.request.user):
+            visitor_events.append({
+                'first_name': visitor.first_name,
+                'last_name': visitor.last_name,
+                'start': visitor.day_of_arrival.isoformat(),
+                'end': visitor.day_of_departure.isoformat(),
+                'priority': visitor.priority,
+                'purpose_of_visit': visitor.purpose_of_visit,
+                'company_name': visitor.company_name,
+
+            })
+            for meeting_room in visitor.meetingroom_set.all():
+                meeting_events.append({
+                    'name': meeting_room.name,
+                    'start_time': meeting_room.start_time.isoformat(),
+                    'end_time': meeting_room.end_time.isoformat(),
+
+                })
+
+        print(meeting_events)
+        context['meeting_events'] = json.dumps(meeting_events)
+        context['visitor_events'] = json.dumps(visitor_events)
+
+        return context
+
+
+class DeleteMeetingView(LoginRequiredMixin, DeleteView):
+    model = MeetingRoom
+    success_url = 'visitors'
+
+    def get_success_url(self):
+        return reverse('visitor_meetings', kwargs={'meeting_id': self.kwargs['meeting_id']})
+
+    def get(self, request, *args, **kwargs):
+        meeting_id = self.kwargs.get('meeting_id')
+        meeting = MeetingRoom.objects.get(pk=meeting_id)
+        meeting.delete()
+        return render(request, 'calendar.html')

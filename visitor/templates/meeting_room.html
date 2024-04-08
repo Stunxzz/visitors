@@ -1,0 +1,94 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block img%}
+{%endblock%}
+{%block content%}
+<div class="container" style="width: 50%">
+    <form method="post" action="{% url 'create_meeting' visitor_id %}" style="margin-top: 20px">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="col" style="margin-top: 20px">
+                {{ form.name.label_tag }}
+                {{ form.name }}
+            </div>
+        </div>
+        <div class="row" style="margin-top: 20px">
+            <div class="col">
+                {{ form.start_time.label_tag }}
+                {{ form.start_time }}
+            </div>
+            <div class="col">
+                {{ form.end_time.label_tag }}
+                {{ form.end_time }}
+            </div>
+        </div>
+        <div class="row" style="margin-top: 20px">
+            <div class="col">
+                <div style="display: flex; gap: 15px">
+                    {{ form.coffe.label_tag }}
+                    {{ form.coffe }}
+                </div>
+                <div style="display: flex; gap: 15px; margin-top: 8px">
+                    {{ form.water.label_tag }}
+                    {{ form.water }}
+                </div>
+                <div style="display: flex; gap: 15px; margin-top: 8px">
+                    {{ form.carbonated_drinks.label_tag }}
+                    {{ form.carbonated_drinks }}
+                </div>
+                <div style="display: flex; gap: 15px; margin-top: 8px">
+                    {{ form.stickers.label_tag }}
+                    {{ form.stickers }}
+                </div>
+            </div>
+            <div class="col">
+                <div style="display: flex; gap: 15px">
+                    {{ form.cookies.label_tag }}
+                    {{ form.cookies }}
+                </div>
+                <div style="display: flex; gap: 15px; margin-top: 8px">
+                    {{ form.beamer.label_tag }}
+                    {{ form.beamer }}
+                </div>
+                <div style="display: flex; gap: 15px; margin-top: 8px">
+                    {{ form.flipchart.label_tag }}
+                    {{ form.flipchart }}
+                </div>
+                <div style="display: flex; gap: 15px; margin-top: 8px">
+                    {{ form.room_others.label_tag }}
+                    {{ form.room_others }}
+                </div>
+
+            </div>
+        </div>
+         <div class="row others_description" style="margin-top: 15px">
+                {{ form.others_description.label_tag }}
+                {{ form.others_description }}
+            </div>
+
+        <div >
+            <button style="width: 100%; margin-top:10px" type="submit" class="btn btn-success btn-lg btn-block">Create</button>
+        </div>
+    </form>
+</div>
+<script>
+$(document).ready(function() {
+    const dayOfArrival = "{{ day_of_arrival }}T00:00:00";
+    const dayOfDeparture = "{{ day_of_departure }}T00:00:00";
+     const startDateInput = document.querySelector(".start_date");
+    const endDateInput = document.querySelector(".end_date");
+    $(".start_date").attr("min", dayOfArrival);
+    $(".start_date").attr("max", dayOfDeparture);
+    $(".end_date").attr("min", dayOfArrival);
+    $(".end_date").attr("max", dayOfDeparture);
+     endDateInput.addEventListener('change', function() {
+        const endDateValue = this.value;
+        const startDateValue = startDateInput.value;
+        if (endDateValue < startDateValue) {
+            this.value = startDateValue;
+        }
+    });
+});
+</script>
+{%endblock%}

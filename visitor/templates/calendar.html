@@ -1,0 +1,68 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block img%}
+{%endblock%}
+{%block content%}
+<div class="container" style="width: 100%">
+    <div id='calendar'></div>
+</div>
+
+
+<style>
+    .fc-event-title-container{
+        height:50px;
+        padding: 5px;}
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const calendarEl = document.getElementById('calendar');
+    const visitorEvents = JSON.parse('{{ visitor_events|escapejs }}');
+    const meetingEvents = JSON.parse('{{ meeting_events|escapejs }}');
+      console.log(meetingEvents)
+
+    const allEvents = [
+        ...visitorEvents.map(event => ({
+            title: `Visitor: ${event.first_name} ${event.last_name}`,
+            start: event.start,
+            end: event.end,
+            backgroundColor: 'green',
+            borderColor: 'green',
+            extendedProps: {
+                description: `Visitor: ${event.first_name} ${event.last_name},
+Priority: ${event.priority},
+Company name: ${event.company_name},
+Purpose of visit: ${event.purpose_of_visit}`
+            }
+        })),
+        ...meetingEvents.map(event => ({
+            title: event.name,
+            start: event.start_time,
+            end: event.end_time,
+            backgroundColor: 'blue',
+            borderColor: 'blue',
+            extendedProps: {
+                description: `Meeting: ${event.name},
+Location: ${event.start_time},
+Organizer: ${event.start_time}`
+            }
+        }))
+    ];
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,listWeek'
+        },
+        events: allEvents,
+        eventClick: function(info) {
+            alert(info.event.extendedProps.description);
+        }
+    });
+
+    calendar.render();
+});
+
+</script>
+{%endblock%}

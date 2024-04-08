@@ -2,66 +2,27 @@
 {%load static%}
 {%block content%}
 <style>
-    .container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 18px;
-    }
-
     #RegisterForm {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
         background-image: url("{%static 'img/wt.png'%}");
         background-size: cover;
         background-position: center;
         overflow: hidden;
-        font-size: 20px;
         border: 1px solid #ccc;
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        padding: 20px;
-        width: 500px;
-        height: 400px;
+        padding: 10px;
     }
 
-    #RegisterForm input[type="email"],
-    #RegisterForm input[type="password"],
-    #RegisterForm input[type="text"]
-    {
-        display: flex;
-        justify-content: space-between;
-        width: 400px;
-        border-radius: 5px
-    }
+    #RegisterForm ul,
+    #RegisterForm span{
+    display:none}
     </style>
-<div class="container">
+<div class="container" style="width: 50%">
     <form method="post" action="{% url 'register' %}" id="RegisterForm">
         {% csrf_token %}
+        {{form.as_table}}
         <div>
-            <label st for="id_email">Email:</label>
-            {{ form.email }}
-        </div>
-        <div>
-            <label st for="id_first_name">First name:</label>
-            {{ form.first_name }}
-        </div>
-        <div>
-            <label st for="id_last_name">Last name:</label>
-            {{ form.last_name}}
-        </div>
-        <div>
-            <label for="id_password1">Password:</label>
-            {{ form.password1 }}
-        </div>
-        <div>
-            <label for="id_password2">Confirm Password:</label>
-            {{ form.password2 }}
-        </div>
-        <div>
-            <button style="margin-top:20px" type="submit" class="btn btn-primary">Register</button>
+            <button style="width: 100%" type="submit" class="btn btn-primary">Register</button>
         </div>
     </form>
 </div>

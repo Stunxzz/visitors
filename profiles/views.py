@@ -1,14 +1,15 @@
 from django.contrib.auth import logout, authenticate, login
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
 from .models import Profile
-from .forms import ProfileCreationForm
-from django.contrib.auth.views import LoginView, LogoutView
+from .forms import ProfileCreationForm, EmailAuthenticationForm
+from django.contrib.auth.views import LoginView
 
 
 class SingUp(LoginView):
     template_name = 'login.html'
+    form_class = EmailAuthenticationForm
     success_url = reverse_lazy('visitors')
 
 
@@ -19,8 +20,6 @@ class CreateProfileView(CreateView):
 
     def form_valid(self, form):
         profile = form.save()
-        print(profile.email)
-        print(profile.password)
         user = authenticate(request=self.request, email=profile.email, password=form.cleaned_data['password1'])
         if user is not None:
             login(self.request, user)
