@@ -1,0 +1,50 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block img%}
+{%endblock%}
+{%block content%}
+    <style>
+  legend.centered-legend {
+    text-align: center;
+    width: 100%;
+    padding: 0.5em;
+  }
+</style>
+<div class="container">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset >
+      <legend class="centered-legend" style="padding: 0">Office Meeting</legend>
+      {{ second_meeting.as_table}}
+    </fieldset>
+
+    <fieldset>
+      <legend class="centered-legend">Out Of Office Meeting Planner</legend>
+      {{ meeting_planner_form.as_table }}
+    </fieldset>
+
+    <button type="submit" style="width: 100%" class="btn btn-success btn-lg btn-block">Create</button>
+  </form>
+</div>
+<script>
+$(document).ready(function() {
+    const dayOfArrival = "{{ day_of_arrival }}00:00:00";
+    const dayOfDeparture = "{{ day_of_departure }}T23:59:00";
+    console.log(dayOfArrival)
+     const startDateInput = document.querySelector(".start_date");
+    const endDateInput = document.querySelector(".end_date");
+    $(".start_date").attr("min", dayOfArrival);
+    $(".start_date").attr("max", dayOfDeparture);
+    $(".end_date").attr("min", dayOfArrival);
+    $(".end_date").attr("max", dayOfDeparture);
+     endDateInput.addEventListener('change', function() {
+        const endDateValue = this.value;
+        const startDateValue = startDateInput.value;
+        if (endDateValue < startDateValue) {
+            this.value = startDateValue;
+        }
+    });
+});
+</script>
+
+{% endblock %}

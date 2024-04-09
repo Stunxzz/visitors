@@ -1,7 +1,7 @@
 from django import forms
 from .models import (Visitor,
-                     VisitorSafetyNeeds,
-                     MeetingRoom, OtherRequirements)
+
+                     MeetingRoom, OutOfOfficeMeetingPlanner)
 
 
 class VisitorForm(forms.ModelForm):
@@ -20,12 +20,6 @@ class VisitorForm(forms.ModelForm):
 
             'day_of_departure': forms.DateInput(attrs={'class': 'form-control departure_date', 'type': 'date'}),
         }
-
-
-class VisitorSafetyNeedsForm(forms.ModelForm):
-    class Meta:
-        model = VisitorSafetyNeeds
-        exclude = ("visitor",)
 
 
 class MeetingRoomForm(forms.ModelForm):
@@ -50,7 +44,15 @@ class MeetingRoomForm(forms.ModelForm):
         }
 
 
-class OtherRequirementsForm(forms.ModelForm):
+
+
+class OutOfOfficeMeetingPlannerForm(forms.ModelForm):
     class Meta:
-        model = OtherRequirements
-        exclude = ("visitor",)
+        model = OutOfOfficeMeetingPlanner
+        fields = ['destination', 'numbers_of_people', 'transport_choice']
+        widgets = {
+            'destination': forms.TextInput(attrs={'class': 'form-control'}),
+            'numbers_of_people': forms.NumberInput(attrs={'class': 'form-control'}),
+            'transport_choice': forms.Select(attrs={'class': 'form-control'}),
+        }
+

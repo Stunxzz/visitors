@@ -5,9 +5,10 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
-from visitor.forms import VisitorForm, VisitorSafetyNeedsForm, MeetingRoomForm, OtherRequirementsForm
-from visitor.models import Visitor, MeetingRoom
+from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, FormView
+from visitor.forms import VisitorForm,  MeetingRoomForm,  \
+    OutOfOfficeMeetingPlannerForm
+from visitor.models import Visitor, MeetingRoom, OutOfOfficeMeetingPlanner
 
 
 class MyVisitors(LoginRequiredMixin,TemplateView):
@@ -33,6 +34,9 @@ class CreateVisitorView(LoginRequiredMixin, CreateView):
         visitor.user = self.request.user
         visitor.save()
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('more_information', kwargs={'visitor_id': self.object.id})
 
 
 class UserVisitorsJsonView(View):
@@ -77,30 +81,6 @@ class DeleteVisitorView(LoginRequiredMixin, DeleteView):
         visitor.delete()
         return HttpResponseRedirect(self.get_success_url())
 
-
-class CreateMeetingRoomView(View):
-    def get(self, request, visitor_id):
-        visitor = get_object_or_404(Visitor, pk=visitor_id)
-        day_of_arrival = visitor.day_of_arrival.strftime('%Y-%m-%d')
-        print(day_of_arrival)
-        day_of_departure = visitor.day_of_departure.strftime('%Y-%m-%d')
-        print(day_of_departure)
-        form = MeetingRoomForm()
-        return render(request, 'meeting_room.html', {'form': form,
-                                                     'visitor_id': visitor_id,
-                                                     'day_of_arrival': day_of_arrival,
-                                                     'day_of_departure': day_of_departure
-                                                     })
-
-    def post(self, request, visitor_id):
-        form = MeetingRoomForm(request.POST)
-        if form.is_valid():
-            last_visitor = get_object_or_404(Visitor, pk=visitor_id)
-            meeting_room = form.save(commit=False)
-            meeting_room.visitor = last_visitor
-            meeting_room.save()
-            return redirect('calendar')
-        return render(request, 'meeting_room.html', {'form': form})
 
 
 class UserMeetingRoomsJsonView(View):
@@ -168,3 +148,44 @@ class DeleteMeetingView(LoginRequiredMixin, DeleteView):
         meeting = MeetingRoom.objects.get(pk=meeting_id)
         meeting.delete()
         return render(request, 'calendar.html')
+
+
+class MoreInformationFormView(View):
+  def get(self, request, visitor_id):
+    meeting_planner_form = OutOfOfficeMeetingPlannerForm()
+    second_meeting = MeetingRoomForm()
+    visitor = get_object_or_404(Visitor, pk=visitor_id)
+
+
+    context = {
+
+        'meeting_planner_form': meeting_planner_form,
+        'second_meeting': second_meeting,
+        'day_of_arrival': visitor.day_of_arrival.strftime('%Y-%m-%d'),
+        'day_of_departure': visitor.day_of_departure.strftime('%Y-%m-%d')
+
+    }
+    return render(request, 'more_information.html', context)
+
+  def post(self, request, visitor_id):
+      second_meeting = MeetingRoomForm(request.POST)
+      meeting_planner_form = OutOfOfficeMeetingPlannerForm(request.POST)
+
+      if all([second_meeting.is_valid(), meeting_planner_form.is_valid(), ]):
+          visitor_meeting = second_meeting.save(commit=False)
+          visitor_meeting.visitor_id = visitor_id
+          visitor_meeting.save()
+
+          meeting_planner = meeting_planner_form.save(commit=False)
+          meeting_planner.visitor_id = visitor_id
+          meeting_planner.save()
+
+          return redirect('visitors')
+      else:
+
+          context = {
+              'visitor_meeting': second_meeting,
+              'meeting_planner_form': meeting_planner_form,
+
+          }
+          return render(request, 'more_information.html', context)

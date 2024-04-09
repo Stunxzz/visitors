@@ -32,17 +32,6 @@ class Visitor(Person):
 
 
 
-class VisitorSafetyNeeds(models.Model):
-    visitor = models.OneToOneField(Visitor, on_delete=models.CASCADE, related_name='safety_needs')
-    needs_helmet = models.BooleanField(default=False)
-    needs_vest = models.BooleanField(default=False)
-    needs_shoes = models.BooleanField(default=False)
-    size_shoes = models.IntegerField(blank=True, null=True)
-
-    def __str__(self):
-        return f"Safety Needs for {self.visitor}"
-
-
 class MeetingRoom(models.Model):
     visitor = models.ForeignKey(Visitor, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
@@ -63,7 +52,15 @@ class MeetingRoom(models.Model):
 
 
 
-
-class OtherRequirements(models.Model):
-    visitor = models.OneToOneField(Visitor, on_delete=models.CASCADE, related_name='other_requirements')
-    others_thinks = models.TextField(max_length=200, blank=True, null=True)
+class OutOfOfficeMeetingPlanner(models.Model):
+    visitor = models.ForeignKey(Visitor, on_delete=models.CASCADE)
+    destination = models.CharField(max_length=200, blank=True, null=True)
+    CHOICES_TRANSPORT = [
+        ("car", "Car"),
+        ("bus", "Bus"),
+        ("company_car", "Company car")
+    ]
+    max_length_choice_transport = find_max_length(CHOICES_TRANSPORT)
+    numbers_of_people = models.IntegerField(blank=True, null=True)
+    transport_choice = models.CharField(blank=True, null=True, choices=CHOICES_TRANSPORT,
+                                        max_length=max_length_choice_transport)

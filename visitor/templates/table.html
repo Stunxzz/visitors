@@ -37,7 +37,8 @@
       <th data-field="priority" data-sortable="true">Priority</th>
       <th data-field="day_of_arrival" data-sortable="true" >Day of Arrival</th>
       <th data-field="day_of_departure" data-sortable="true">Day of Departure</th>
-      <th data-field="add_group" data-formatter="addGroupFormatter" class="table-buttons">Add Group</th>
+      <th data-field="add_group" data-formatter="addGroupFormatter" class="table-buttons" >Add Group</th>
+
     </tr>
   </thead>
 </table>
@@ -50,7 +51,7 @@
     function addGroupFormatter(value, row) {
     const editButton = '<a href="edit_visitor/' + row.id + '/" class="btn btn-primary add-group-btn mr-2" data-visit-id="' + row.id + '">Edit</a>';
     const deleteButton = '<a href="delete_visitor/' + row.id + '/" class="btn btn-danger add-group-btn" data-visit-id="' + row.id + '" onclick="return confirm(\'Сигурни ли сте, че искате да изтриете този запис?\')">Delete</a>';
-      const ViewButton = '<a href="create_meeting/' + row.id + '/" class="btn btn-primary add-group-btn mr-2" data-visit-id="' + row.id + '">Meetings</a>';
+      const ViewButton = '<a href="more_information/' + row.id + '/" class="btn btn-primary add-group-btn mr-2" data-visit-id="' + row.id + '">Meetings</a>';
     return editButton + deleteButton + ViewButton;
 }
    </script>

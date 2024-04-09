@@ -72,23 +72,5 @@
         </div>
     </form>
 </div>
-<script>
-$(document).ready(function() {
-    const dayOfArrival = "{{ day_of_arrival }}T00:00:00";
-    const dayOfDeparture = "{{ day_of_departure }}T00:00:00";
-     const startDateInput = document.querySelector(".start_date");
-    const endDateInput = document.querySelector(".end_date");
-    $(".start_date").attr("min", dayOfArrival);
-    $(".start_date").attr("max", dayOfDeparture);
-    $(".end_date").attr("min", dayOfArrival);
-    $(".end_date").attr("max", dayOfDeparture);
-     endDateInput.addEventListener('change', function() {
-        const endDateValue = this.value;
-        const startDateValue = startDateInput.value;
-        if (endDateValue < startDateValue) {
-            this.value = startDateValue;
-        }
-    });
-});
-</script>
+
 {%endblock%}
