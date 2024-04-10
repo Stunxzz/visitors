@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block img %}
+{% endblock %}
+{% block content %}
+    <style>
+        table {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .table-buttons {
+            width: 400px
+        }
+
+        .add-group-btn {
+            margin-right: 10px;
+            width: 100px;
+        }
+    </style>
+    <table style="margin:0"
+           id="table"
+           data-search="false"
+           data-pagination="true"
+           data-pagination-size="5"
+           data-page-list="[10, 25, 50, 100, all]"
+           data-url="{% url 'profile_api' %}"
+           data-locale="en-US">
+
+        <thead>
+        <tr>
+            <th data-field='first_name' data-sortable="true">First name</th>
+            <th data-field='last_name' data-sortable="true">Last name</th>
+            <th data-field='email' data-sortable="true">Email</th>
+            <th data-field='admin' data-sortable="true">Admin</th>
+            <th data-field="add_group" data-formatter="addGroupFormatter" class="table-buttons">Add Group</th>
+        </tr>
+        </thead>
+    </table>
+
+
+    <script>
+
+        $(document).ready(function () {
+            $('#table').bootstrapTable({});
+        });
+
+        function addGroupFormatter(value, row) {
+            const editButton = '<a href="edit_visitor/' + row.id + '/" class="btn btn-primary add-group-btn mr-2" data-visit-id="' + row.id + '">Edit</a>';
+            const deleteButton = '<a href="delete_meeting/' + row.id + '/" class="btn btn-danger add-group-btn" data-visit-id="' + row.id + '" onclick="return confirm(\'Сигурни ли сте, че искате да изтриете този запис?\')">Delete</a>';
+            return editButton + deleteButton;
+        }
+    </script>
+{% endblock %}

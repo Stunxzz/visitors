@@ -1,6 +1,8 @@
 from django.contrib.auth import logout, authenticate, login
+from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import CreateView, TemplateView
 from .models import Profile
 from .forms import ProfileCreationForm, EmailAuthenticationForm
@@ -11,6 +13,12 @@ class SingUp(LoginView):
     template_name = 'login.html'
     form_class = EmailAuthenticationForm
     success_url = reverse_lazy('visitors')
+
+    def get_success_url(self):
+        if self.request.user.is_staff:
+            return reverse_lazy('users')
+        else:
+            return reverse_lazy('visitors')
 
 
 class CreateProfileView(CreateView):
@@ -37,3 +45,22 @@ class HomeView(TemplateView):
 def logout_view(request):
     logout(request)
     return redirect('home')
+
+
+class ProfileJson(View):
+    def get(self, request, *args, **kwargs):
+        profiles = Profile.objects.all()
+        json_profiles = []
+        for profile in profiles:
+            json_info = {
+                'first_name': profile.first_name,
+                'last_name': profile.last_name,
+                'email': profile.email,
+                'admin': profile.is_staff
+            }
+            json_profiles.append(json_info)
+        return JsonResponse(json_profiles, safe=False)
+
+
+class ProfileView(TemplateView):
+    template_name = 'users_dashboard.html'

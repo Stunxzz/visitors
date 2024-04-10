@@ -30,7 +30,6 @@
 $(document).ready(function() {
     const dayOfArrival = "{{ day_of_arrival }}00:00:00";
     const dayOfDeparture = "{{ day_of_departure }}T23:59:00";
-    console.log(dayOfArrival)
      const startDateInput = document.querySelector(".start_date");
     const endDateInput = document.querySelector(".end_date");
     $(".start_date").attr("min", dayOfArrival);

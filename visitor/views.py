@@ -129,7 +129,6 @@ class CalendarView(TemplateView):
 
                 })
 
-        print(meeting_events)
         context['meeting_events'] = json.dumps(meeting_events)
         context['visitor_events'] = json.dumps(visitor_events)
 
