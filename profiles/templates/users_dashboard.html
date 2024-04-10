@@ -9,20 +9,21 @@
             font-weight: bold;
         }
 
-        .table-buttons {
-            width: 400px
-        }
-
-        .add-group-btn {
-            margin-right: 10px;
-            width: 100px;
+        .pagination-info,
+        .page-list{
+        display:none}
+        .fixed-table-pagination{
+            display: flex;
+            align-items: center;
+            justify-content: center
         }
     </style>
-    <table style="margin:0"
+    <table
            id="table"
            data-search="false"
+           data-toolbar="#toolbar"
            data-pagination="true"
-           data-pagination-size="5"
+           data-page-size="8"
            data-page-list="[10, 25, 50, 100, all]"
            data-url="{% url 'profile_api' %}"
            data-locale="en-US">
@@ -46,9 +47,9 @@
         });
 
         function addGroupFormatter(value, row) {
-            const editButton = '<a href="edit_visitor/' + row.id + '/" class="btn btn-primary add-group-btn mr-2" data-visit-id="' + row.id + '">Edit</a>';
-            const deleteButton = '<a href="delete_meeting/' + row.id + '/" class="btn btn-danger add-group-btn" data-visit-id="' + row.id + '" onclick="return confirm(\'Сигурни ли сте, че искате да изтриете този запис?\')">Delete</a>';
-            return editButton + deleteButton;
-        }
+    const editButton = '<a href="/update_user/' + row.id + '/" class="btn btn-primary add-group-btn mr-2" data-visit-id="' + row.id + '">Update user</a>';
+    const deleteButton = '<a href="/delete_user/' + row.id + '/" class="btn btn-danger add-group-btn mr-2" data-visit-id="' + row.id + '" onclick="return confirm(\'Сигурни ли сте, че искате да изтриете този запис?\')">Delete</a>';
+    return editButton + deleteButton;
+}
     </script>
 {% endblock %}

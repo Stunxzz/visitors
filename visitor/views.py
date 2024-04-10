@@ -29,14 +29,9 @@ class CreateVisitorView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         visitor = form.save(commit=False)
-        for f in form:
-            print(f.value())
         visitor.user = self.request.user
         visitor.save()
         return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy('more_information', kwargs={'visitor_id': self.object.id})
 
 
 class UserVisitorsJsonView(View):
@@ -188,3 +183,5 @@ class MoreInformationFormView(View):
 
           }
           return render(request, 'more_information.html', context)
+
+
